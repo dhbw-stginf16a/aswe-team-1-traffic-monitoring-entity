@@ -8,27 +8,35 @@ Monitoring Entity to get traffic & public transportation information from Google
 
 - **location** (string): Current location of the user
 - **destination** (string): Desired destination of the user
-- **preference** (string/array): User's prefered method of transportation.
-  - _car_
-  - _public_
-  - _bike_
-  - _walk_
+- **arriveby** (string) [optional]: Desired time of arrival at the specified destination
+- **travelmode** (array of strings) [optional]: User's preferred method of transportation.
+  - _driving_
+  - _transit_ : Public Transport
+  - _bicycling_
+  - _walking_
 
 ## Request Types
-### Route to Destination
-**Type-Tag:** `traffic_route`
 
-### Issues to Destination
-**Type-Tag:** `traffic_issues`
+### Route to Destination
+
+**Type-Tag:** `traffic_route`
 
 #### Request
 
 - **location**: [see](#general-parameters)
-- **destinaten**: [see](#general-parameters)
-- **preference**: [see](#general-parameters)
+- **destination**: [see](#general-parameters)
+- **arriveby**: [see](#general-parameters)
+- **travelmode**: [see](#general-parameters)
 
 #### Response
 
+- **routes**: (array): Array of possible routes
+  - **travelmode**: single travelmode string [see](#general-parameters)
+  - **duration** (number): Estimated time for route in seconds
+  - **durationText** (string): Time in text representation
+  - **destination** (string): Destination as understood by Google API
+  - **location** (string): Location as understood by Google API
+  - **link**: (string): Link to Google Maps
 
 #### Example
 
