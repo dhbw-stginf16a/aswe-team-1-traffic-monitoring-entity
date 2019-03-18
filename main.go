@@ -1,31 +1,22 @@
 package main
 
 import (
-	"context"
 	"log"
 	"os"
-	"os/signal"
-	"time"
 )
 
 func main() {
-	requestEndpoint := &RequestEndpoint{}
-	if err := requestEndpoint.Prepare(); err != nil {
+
+	manager := NewManager("centralnode:8080")
+
+	err := manager.Init()
+	if err != nil {
 		log.Fatal(err)
 	}
+	
+	manager.Serve()
 
-	requestEndpoint.StartServe()
-
-	c := make(chan os.Signal, 1)
-
-	signal.Notify(c, os.Interrupt)
-
-	<-c
-
-	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
-	defer cancel()
-
-	requestEndpoint.Shutdown(ctx)
+	manager.Shutdown()
 
 	os.Exit(0)
 

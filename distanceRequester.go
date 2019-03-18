@@ -2,8 +2,6 @@ package main
 
 import (
 	"context"
-	"errors"
-	"os"
 	"time"
 
 	"googlemaps.github.io/maps"
@@ -14,13 +12,8 @@ type DistanceRequester struct {
 	client *maps.Client
 }
 
-// Prepare ...
-func (dr *DistanceRequester) Prepare() error {
-	apiKey := os.Getenv("GOOGLE_API_KEY")
-	if apiKey == "" {
-		return errors.New("Google API Key not found")
-	}
-
+// Init ...
+func (dr *DistanceRequester) Init(apiKey string) error {
 	c, err := maps.NewClient(maps.WithAPIKey(apiKey))
 	if err != nil {
 		return err

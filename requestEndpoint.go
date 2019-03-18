@@ -16,11 +16,11 @@ type RequestEndpoint struct {
 }
 
 // Prepare ...
-func (endpoint *RequestEndpoint) Prepare() error {
+func (endpoint *RequestEndpoint) Init(distReq *DistanceRequester) error {
 	endpoint.router = mux.NewRouter()
 
 	requestHandler := &RequestHandler{}
-	if err := requestHandler.Prepare(); err != nil {
+	if err := requestHandler.Init(distReq); err != nil {
 		return err
 	}
 

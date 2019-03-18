@@ -39,13 +39,9 @@ type RequestHandler struct {
 	distanceRequester *DistanceRequester
 }
 
-// Prepare ...
-func (handler *RequestHandler) Prepare() error {
-	distanceRequester := &DistanceRequester{}
-	if err := distanceRequester.Prepare(); err != nil {
-		return err
-	}
-	handler.distanceRequester = distanceRequester
+// Init ...
+func (handler *RequestHandler) Init(distReq *DistanceRequester) error {
+	handler.distanceRequester = distReq
 	return nil
 }
 
