@@ -11,7 +11,8 @@ script:
 - go test
 deploy:
   provider: script
-  script: "./deploy.sh"
+  skip_cleanup: true
+  script: bash ./deploy.sh
   on:
     branch: master
     tags: true
