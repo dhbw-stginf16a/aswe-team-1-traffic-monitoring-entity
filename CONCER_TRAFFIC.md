@@ -8,8 +8,8 @@ Monitoring Entity to get traffic & public transportation information from Google
 
 - **location** (string): Current location of the user
 - **destination** (string): Desired destination of the user
-- **arriveby** (string) [optional]: Desired time of arrival at the specified destination
-- **travelmode** (array of strings) [optional]: User's preferred method of transportation.
+- **arriveby** (string) [optional]: Desired time of arrival at the specified destination. Seconds since January 1, 1970 UTC
+- **travelmode** (array of strings) [optional]: User's preferred method of transportation. Default is just driving.
   - _driving_
   - _transit_ : Public Transport
   - _bicycling_
@@ -34,9 +34,12 @@ Monitoring Entity to get traffic & public transportation information from Google
   - **travelmode**: single travelmode string [see](#general-parameters)
   - **duration** (number): Estimated time for route in seconds
   - **durationText** (string): Time in text representation
+  - **delay** (number): Delay in seconds (Only with travelmode driving).
+  - **delayText** (string): Time in text representation
+  - **distance** (string): Distance in human readable format
   - **destination** (string): Destination as understood by Google API
   - **location** (string): Location as understood by Google API
-  - **link**: (string): Link to Google Maps
+  - **link**: (string) [WIP]: Link to Google Maps
 
 #### Example
 
