@@ -1,14 +1,15 @@
 language: go
 go:
-- 1.12.x
+  - 1.12.x
 services:
-- docker
+  - docker
 install:
-- go get
+  - go get
 before_script:
-- CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -tags netgo -ldflags '-w' -o traffic-monitor
+  - CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -tags netgo -ldflags '-w' -o traffic-monitor
 script:
-- go test -cover -v ./...
+  - go test -v -coverprofile cover.out ./...
+  - go tool cover -func=cover.out
 deploy:
   provider: script
   skip_cleanup: true
@@ -18,6 +19,6 @@ deploy:
     tags: true
 env:
   global:
-  - GO111MODULE=on
-  - DOCKER_USERNAME=doriancz
-  - secure: DANOrxAq4IkI7Nc400VK9jojW69BAD4dFkh2yuuRjxacHouRQ+T/nffCY5xzXgO302zCVC4YjzDwkHb0+QlMI2MXYlzfnNOjGqsZ29Qgnw1A7eSywLzY3jJ/JVPeq0xeIoVk4flWllT+aMcQ3ZjD2G4/KcVBhnXwHsvc8XmPnlUWSzZR83cFL3R29lBmUQD8zn7Hii72S+t1lF/2UbzA9YVyk2yMz7HlbragYetieharfV6ync1x4r0HMdDtQnRyPXuGqgaTDGL2Xb1WHRuy04Dx5xzbw77WutIW9s3JMhBJPLQ9I2vt0m1OaH6UoDRiPK8k8fjQu4ibvRb67+dDPUir/rzorBZEvmrUgVu5mIvGIKGwHofiDW+8robeEf9NIUU0ObQ02IId/GL0fKS4gNCCe9O02mMWnn4Vao081UCHKd/c3ibxrmbJ0nX7t+R3Hh/C+4EqxGh4n3YaxrCTz7B9eQCMpsuhwPAOhW6KC0d63M6+10uDBR8A+JPIh3RzAqtREeqr3bGkX8x9j1hYR5GozfuD9eBPfcedEo+uT2l8Q6wSYxhE/UyMF0CijtTFGtRKe0vL9l635Ij0r+2X7VPmGOll2HlwFr/+yDFW6fU7pq7VuUers+oU5pjR+S5ajlzhMtLTRe0Cz8/Cuhl0+Vju5JLxcZKg+3m5BGYoP/I=
+    - GO111MODULE=on
+    - DOCKER_USERNAME=doriancz
+    - secure: DANOrxAq4IkI7Nc400VK9jojW69BAD4dFkh2yuuRjxacHouRQ+T/nffCY5xzXgO302zCVC4YjzDwkHb0+QlMI2MXYlzfnNOjGqsZ29Qgnw1A7eSywLzY3jJ/JVPeq0xeIoVk4flWllT+aMcQ3ZjD2G4/KcVBhnXwHsvc8XmPnlUWSzZR83cFL3R29lBmUQD8zn7Hii72S+t1lF/2UbzA9YVyk2yMz7HlbragYetieharfV6ync1x4r0HMdDtQnRyPXuGqgaTDGL2Xb1WHRuy04Dx5xzbw77WutIW9s3JMhBJPLQ9I2vt0m1OaH6UoDRiPK8k8fjQu4ibvRb67+dDPUir/rzorBZEvmrUgVu5mIvGIKGwHofiDW+8robeEf9NIUU0ObQ02IId/GL0fKS4gNCCe9O02mMWnn4Vao081UCHKd/c3ibxrmbJ0nX7t+R3Hh/C+4EqxGh4n3YaxrCTz7B9eQCMpsuhwPAOhW6KC0d63M6+10uDBR8A+JPIh3RzAqtREeqr3bGkX8x9j1hYR5GozfuD9eBPfcedEo+uT2l8Q6wSYxhE/UyMF0CijtTFGtRKe0vL9l635Ij0r+2X7VPmGOll2HlwFr/+yDFW6fU7pq7VuUers+oU5pjR+S5ajlzhMtLTRe0Cz8/Cuhl0+Vju5JLxcZKg+3m5BGYoP/I=
