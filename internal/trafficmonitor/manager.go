@@ -13,31 +13,37 @@ import (
 type Manager struct {
 	apiKey          string
 	hostname        string
+	centralURL      string
 	centralCon      *CentralConnector
 	requestEndpoint *RequestEndpoint
 	distReq         *DistanceRequester
 }
 
 // NewManager creates new Manager
-func NewManager(centralURL string) *Manager {
-	return &Manager{centralCon: NewCentralConnector(centralURL), requestEndpoint: &RequestEndpoint{}, distReq: &DistanceRequester{}}
+func NewManager() *Manager {
+	return &Manager{requestEndpoint: &RequestEndpoint{}, distReq: &DistanceRequester{}}
 }
 
 // FetchApiKey fetches google api key from env or central node
 func (m *Manager) fetchAPIKey() error {
 	apiKey := os.Getenv("GOOGLE_API_KEY")
-	if apiKey == "" {
-		return errors.New("API Key not found")
+	if apiKey != "" {
+		m.apiKey = apiKey
+		return nil
 	}
-	// TODO: Fetch from Pref Store
+
+	apiKey = m.centralCon.GetGlobalPref("traffic/apiKey")
+	if apiKey == "" {
+		return errors.New("Google API key not found")
+	}
 
 	m.apiKey = apiKey
 	return nil
 }
 
-// FetchApiKey fetches google api key from env or central node
+// Fetch Own Url
 func (m *Manager) fetchHostName() error {
-	hostname := os.Getenv("HOST_NAME")
+	hostname := os.Getenv("OWN_URL")
 	if hostname != "" {
 		m.hostname = hostname
 		return nil
@@ -52,6 +58,16 @@ func (m *Manager) fetchHostName() error {
 	return nil
 }
 
+// Fetch CentralNode URL
+func (m *Manager) fetchCentralNodeURL() error {
+	centralURL := os.Getenv("CENTRAL_URL")
+	if centralURL == "" {
+		return errors.New("Central URL not found")
+	}
+	m.centralURL = centralURL
+	return nil
+}
+
 // Init Manager
 func (m *Manager) Init() error {
 	log.Println("Fetching Hostname")
@@ -59,10 +75,18 @@ func (m *Manager) Init() error {
 		log.Println("Error fetching hostname")
 		return err
 	}
-	log.Println("Hostname: ", m.hostname)
+	log.Println("Own URL: ", m.hostname)
+
+	log.Println("Fetching Central Node url")
+	if err := m.fetchCentralNodeURL(); err != nil {
+		log.Println("Error fetching hostname")
+		return err
+	}
+	m.centralCon = NewCentralConnector(m.centralURL)
+	log.Println("Central Node URL: ", m.centralURL)
 
 	log.Println("Registering at central node")
-	if err := m.centralCon.Register(m.hostname); err != nil {
+	if err := m.centralCon.Register(m.hostname, -1); err != nil {
 		log.Println("Error registering on central node")
 		return err
 	}
