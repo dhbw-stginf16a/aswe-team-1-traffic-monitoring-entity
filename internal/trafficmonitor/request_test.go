@@ -36,6 +36,8 @@ func TestRequest(t *testing.T) {
 
 	endpoint.StartServe()
 
+	<-time.After(time.Second)
+
 	t.Run("Traffic route request", func(t *testing.T) {
 
 		requester.found = true
