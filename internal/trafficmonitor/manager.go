@@ -1,3 +1,5 @@
+//+build !test
+
 package trafficmonitor
 
 import (
@@ -16,12 +18,12 @@ type Manager struct {
 	centralURL      string
 	centralCon      *CentralConnector
 	requestEndpoint *RequestEndpoint
-	distReq         *DistanceRequester
+	distReq         DistanceRequester
 }
 
 // NewManager creates new Manager
 func NewManager() *Manager {
-	return &Manager{requestEndpoint: &RequestEndpoint{}, distReq: &DistanceRequester{}}
+	return &Manager{requestEndpoint: &RequestEndpoint{}, distReq: &GoogleDistanceRequester{}}
 }
 
 // FetchApiKey fetches google api key from env or central node

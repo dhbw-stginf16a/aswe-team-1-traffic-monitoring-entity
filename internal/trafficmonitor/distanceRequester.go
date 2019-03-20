@@ -7,13 +7,19 @@ import (
 	"googlemaps.github.io/maps"
 )
 
-// DistanceRequester ..
-type DistanceRequester struct {
+// DistanceRequester ...
+type DistanceRequester interface {
+	GetDistance(origin, destination, arriveby string, travelMode maps.Mode) (info *DistanceInfo, found bool, err error)
+	Init(apiKey string) error
+}
+
+// GoogleDistanceRequester ...
+type GoogleDistanceRequester struct {
 	client *maps.Client
 }
 
 // Init ...
-func (dr *DistanceRequester) Init(apiKey string) error {
+func (dr *GoogleDistanceRequester) Init(apiKey string) error {
 	c, err := maps.NewClient(maps.WithAPIKey(apiKey))
 	if err != nil {
 		return err
@@ -50,7 +56,7 @@ func parseResult(matrix *maps.DistanceMatrixResponse, travelMode maps.Mode) *Dis
 	}
 
 	info := &DistanceInfo{
-		Mode:      travelMode,
+		Mode:         travelMode,
 		Duration:     int64(duration.Seconds()),
 		DurationText: duration.String(),
 		Delay:        int64(delay.Seconds()),
@@ -64,7 +70,7 @@ func parseResult(matrix *maps.DistanceMatrixResponse, travelMode maps.Mode) *Dis
 }
 
 // GetDistance ...
-func (dr DistanceRequester) GetDistance(origin, destination, arriveby string, travelMode maps.Mode) (info *DistanceInfo, found bool, err error) {
+func (dr GoogleDistanceRequester) GetDistance(origin, destination, arriveby string, travelMode maps.Mode) (info *DistanceInfo, found bool, err error) {
 	r := createRequest(origin, destination, arriveby, travelMode)
 
 	matrix, err := dr.client.DistanceMatrix(context.Background(), r)
@@ -83,7 +89,7 @@ func (dr DistanceRequester) GetDistance(origin, destination, arriveby string, tr
 
 // DistanceInfo ...
 type DistanceInfo struct {
-	Mode      maps.Mode `json:"travelmode"`
+	Mode         maps.Mode `json:"travelmode"`
 	Duration     int64     `json:"duration"`
 	DurationText string    `json:"durationText"`
 	Delay        int64     `json:"delay"`
