@@ -6,7 +6,8 @@ services:
 install:
   - go get
 before_script:
-  - CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -tags netgo -ldflags '-w' -o traffic-monitor
+  # - CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -tags netgo -ldflags '-w' -o traffic-monitor
+  - CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -tags netgo -ldflags '-w -extldflags "-static"' -o traffic-monitor
 script:
   - go test -v -coverprofile cover.out -tags test ./...
   - go tool cover -func=cover.out
