@@ -34,7 +34,7 @@ func (m *Manager) fetchAPIKey() error {
 		return nil
 	}
 
-	apiKey = m.centralCon.GetGlobalPref("traffic/apiKey")
+	apiKey = m.centralCon.GetGlobalPref("traffic_monitor/google_api_key")
 	if apiKey == "" {
 		return errors.New("Google API key not found")
 	}
