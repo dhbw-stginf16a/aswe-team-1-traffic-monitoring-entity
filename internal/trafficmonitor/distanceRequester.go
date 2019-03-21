@@ -2,6 +2,8 @@ package trafficmonitor
 
 import (
 	"context"
+	"crypto/tls"
+	"net/http"
 	"time"
 
 	"googlemaps.github.io/maps"
@@ -20,6 +22,8 @@ type GoogleDistanceRequester struct {
 
 // Init ...
 func (dr *GoogleDistanceRequester) Init(apiKey string) error {
+	http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
+
 	c, err := maps.NewClient(maps.WithAPIKey(apiKey))
 	if err != nil {
 		return err
