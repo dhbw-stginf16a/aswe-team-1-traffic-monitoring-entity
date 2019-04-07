@@ -8,7 +8,6 @@ import (
 )
 
 func main() {
-
 	manager := trafficmonitor.NewManager("centralnode:8080")
 
 	err := manager.Init()

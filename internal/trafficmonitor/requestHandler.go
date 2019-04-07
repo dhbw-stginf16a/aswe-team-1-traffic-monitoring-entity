@@ -90,9 +90,12 @@ func (handler RequestHandler) ServeTrafficRoute(w http.ResponseWriter, r *http.R
 		resultArray = append(resultArray, *info)
 	}
 
-	response := &Response{Type: "traffic_route", Payload: ResponsePayload{Routes: resultArray}}
+	response := Response{Type: "traffic_route", Payload: ResponsePayload{Routes: resultArray}}
 
-	data, err := json.Marshal(response)
+	wrapper := make([]Response, 0, 1)
+	wrapper[0] = response
+
+	data, err := json.Marshal(wrapper)
 	if err != nil {
 		log.Println("Error parsing response into json", err)
 		http.Error(w, "Internal Error", 500)

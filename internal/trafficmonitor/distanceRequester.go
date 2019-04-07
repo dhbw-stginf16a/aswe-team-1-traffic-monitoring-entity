@@ -50,7 +50,7 @@ func parseResult(matrix *maps.DistanceMatrixResponse, travelMode maps.Mode) *Dis
 	}
 
 	info := &DistanceInfo{
-		Mode:      travelMode,
+		Mode:         travelMode,
 		Duration:     int64(duration.Seconds()),
 		DurationText: duration.String(),
 		Delay:        int64(delay.Seconds()),
@@ -83,7 +83,7 @@ func (dr DistanceRequester) GetDistance(origin, destination, arriveby string, tr
 
 // DistanceInfo ...
 type DistanceInfo struct {
-	Mode      maps.Mode `json:"travelmode"`
+	Mode         maps.Mode `json:"travelmode"`
 	Duration     int64     `json:"duration"`
 	DurationText string    `json:"durationText"`
 	Delay        int64     `json:"delay"`
