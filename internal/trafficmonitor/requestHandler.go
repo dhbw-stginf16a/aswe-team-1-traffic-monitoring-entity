@@ -36,11 +36,11 @@ type ResponsePayload struct {
 
 // RequestHandler ...
 type RequestHandler struct {
-	distanceRequester *DistanceRequester
+	distanceRequester DistanceRequester
 }
 
 // Init ...
-func (handler *RequestHandler) Init(distReq *DistanceRequester) error {
+func (handler *RequestHandler) Init(distReq DistanceRequester) error {
 	handler.distanceRequester = distReq
 	return nil
 }
@@ -65,8 +65,10 @@ func (handler RequestHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) 
 	case "traffic_route":
 		handler.ServeTrafficRoute(w, r, req)
 		break
+	default:
+		http.Error(w, "Type is invalid", http.StatusNotFound)
+		break
 	}
-
 }
 
 // ServeTrafficRoute ...

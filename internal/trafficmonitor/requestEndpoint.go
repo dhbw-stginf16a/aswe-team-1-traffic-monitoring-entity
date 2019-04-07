@@ -15,8 +15,8 @@ type RequestEndpoint struct {
 	router *mux.Router
 }
 
-// Prepare ...
-func (endpoint *RequestEndpoint) Init(distReq *DistanceRequester) error {
+// Init ...
+func (endpoint *RequestEndpoint) Init(distReq DistanceRequester) error {
 	endpoint.router = mux.NewRouter()
 
 	requestHandler := &RequestHandler{}

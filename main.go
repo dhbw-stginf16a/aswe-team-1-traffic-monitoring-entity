@@ -1,3 +1,5 @@
+//+build !test
+
 package main
 
 import (
@@ -8,7 +10,8 @@ import (
 )
 
 func main() {
-	manager := trafficmonitor.NewManager("centralnode:8080")
+
+	manager := trafficmonitor.NewManager()
 
 	err := manager.Init()
 	if err != nil {
